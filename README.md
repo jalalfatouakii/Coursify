@@ -19,24 +19,24 @@ Course Resumer is an innovative application designed to enhance your educational
 
 1. Clone the repository:
 ```bash
-   git clone https://github.com/jalalfatouakii/course-resumer
+git clone https://github.com/jalalfatouakii/course-resumer
    ```
 
 2. Navigate to the project directory:
 ```bash
-   cd course-resumer
+cd course-resumer
    ```
 
 3. Install the dependencies:
 ```bash
-   npm install
+npm install
    ```
 
 ### Running the Application
 
 To start the application in development mode, run:
 ```bash
-   npm start
+npm start
    ```
 
 Open http://localhost:3000 to view it in your browser.
@@ -45,7 +45,7 @@ Building the Application
 
 To build the application for production, run:
 ```bash
-   npm run build
+npm run build
    ```
 
 The build artifacts will be stored in the build/ directory.
