@@ -1,5 +1,6 @@
 // FAQPage.js
 import React from 'react';
+import '../styles/Pages.css'
 
 function QnAPage() {
   return (

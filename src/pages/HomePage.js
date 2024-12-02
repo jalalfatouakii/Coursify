@@ -1,6 +1,7 @@
 // HomePage.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Pages.css'
 
 
 function HomePage() {
@@ -25,7 +26,7 @@ function HomePage() {
       <p>
         This application is intended for educational purposes, providing you with the tools you need to succeed in your studies.
       </p>
-      <button onClick={handleGetStarted}>Get Started</button>
+      <button className='style-button' onClick={handleGetStarted}>Get Started</button>
     </div>
   );
 }
