@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './HomePage';
-import GetStarted from './GetStarted';
-import NavBar from './NavBar';
+import HomePage from './pages/HomePage';
+import GetStarted from './pages/GetStarted';
+import NavBar from './components/NavBar';
 import './App.css';
-import AboutPage from './AboutPage';
-import QnAPage from './QnAPage';
+import AboutPage from './pages/AboutPage';
+import QnAPage from './pages/QnAPage';
 
 function App() {
   return (
