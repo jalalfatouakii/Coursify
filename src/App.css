@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+/* NavBar.css */
+.NavBar {
+  background-color: #113a7a;
+  overflow: hidden;
+}
+
+.NavBar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.NavBar li {
+  float: left;
+}
+
+.NavBar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.NavBar li a:hover {
+  background-color: #0b295a;
+}
