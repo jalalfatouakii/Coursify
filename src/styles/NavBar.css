@@ -2,6 +2,10 @@
 .NavBar {
     background-color: #113a7a;
     overflow: hidden;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    width: 100%;
   }
   
 .NavBar ul {
@@ -26,3 +30,7 @@
 .NavBar li a:hover {
     background-color: #0b295a;
 }
+/* Add padding to the top of the body to prevent content from being hidden behind the fixed navbar */
+body {
+    padding-top: 50px; /* Adjust this value based on the height of your navbar */
+  }
