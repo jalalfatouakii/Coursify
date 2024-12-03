@@ -14,3 +14,193 @@
 .style-button:hover {
     background-position: 100% 50%;
 }
+/* Pages.css */
+/* Pages.css */
+.style-button {
+    background: linear-gradient(45deg, blue, purple);
+    border: none;
+    border-radius: 20px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-position 0.5s ease;
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+  }
+  
+  .style-button:hover {
+    background-position: 100% 50%;
+  }
+  
+  .Courses {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: black;
+  }
+  
+  .Courses h2 {
+    margin-bottom: 10px;
+   
+  }
+  
+  .Courses ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .Courses li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    border-radius: 10px;
+  }
+  .Courses li:hover {
+    color: white;
+    background: linear-gradient(45deg, blue, purple);
+  }
+  .Courses li:last-child {
+    border-bottom: none;
+  }
+
+/* GetStarted.css */
+.GetStarted {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.login-form {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.style-button {
+  background: linear-gradient(45deg, blue, purple);
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-position 0.5s ease;
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+}
+
+.style-button:hover {
+  background-position: 100% 50%;
+}
+
+.Loading {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.Message {
+  text-align: center;
+}
+
+/* AboutPage.css */
+.AboutPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+
+  color: white;
+}
+
+.AboutPage h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.AboutPage p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.AboutPage a {
+  text-decoration: none;
+  color: blue;
+  transition: color 0.3s ease;
+}
+
+.AboutPage a:hover {
+  color: yellow;
+}
+
+/* QnAPage.css */
+.QnAPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  text-align: left;
+}
+
+.QnAPage h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: white;
+  text-align: center;
+}
+
+.faq-item {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.faq-item h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #113a7a;
+}
+
+.faq-item p {
+  font-size: 1.2em;
+  color: #333;
+}
