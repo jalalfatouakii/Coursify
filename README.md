@@ -48,7 +48,9 @@ To start the application in development mode, run:
 ```bash
 npm start
    ```
-
+#### Deployed version :
+Open https://www.coursify.lol in your browser
+#### Local :
 Open http://localhost:3000 to view it in your browser.
 
 Building the Application
