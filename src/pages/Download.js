@@ -93,6 +93,7 @@ function Download() {
   };
 
   const handleCourseClick = (course) => {
+    setMessage('')
     setSelectedCourse(course);
   };
 
