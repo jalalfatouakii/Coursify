@@ -179,7 +179,7 @@ function Download() {
 
   return (
     <div className="Download">
-      <h1 id="login-title" className={isLoggedIn ? 'hidden' : ''}>Login to Course Resumer</h1>
+      <h1 id="login-title" className={isLoggedIn ? 'hidden' : ''}>Login to your StudiUM</h1>
       <form onSubmit={handleLogin} id="login-form" className={`login-form ${isLoggedIn ? 'hidden' : ''}`}>
         <div className="form-group">
           <label htmlFor="username">Username:</label>
