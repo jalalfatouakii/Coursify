@@ -10,13 +10,35 @@
     background-size: 200% 200%;
     background-position: 0% 50%;
 }
+.Filters {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    color: black;
+  }
 
+  
+  .filter-group {
+    margin-bottom: 20px;
+  }
+  
+  .filter-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+  }
 .style-button:hover {
     background-position: 100% 50%;
 }
 /* Pages.css */
 /* Pages.css */
-.style-button {
+.style-button-form {
     background: linear-gradient(45deg, blue, purple);
     border: none;
     border-radius: 20px;
@@ -27,42 +49,91 @@
     transition: background-position 0.5s ease;
     background-size: 200% 200%;
     background-position: 0% 50%;
+    margin: 1%;
   }
   
-  .style-button:hover {
+  .style-button-form:hover {
+    background-position: 100% 50%;
+  }
+  .style-button-form-red {
+    background: linear-gradient(45deg, rgb(156, 0, 26), red);
+    border: none;
+    border-radius: 20px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-position 0.5s ease;
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+    margin: 1%;
+  }
+  
+  .style-button-form-red:hover {
     background-position: 100% 50%;
   }
   
   .Courses {
-    margin-top: 20px;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: black;
-  }
-  
-  .Courses h2 {
-    margin-bottom: 10px;
-   
+    text-align: center;
   }
   
   .Courses ul {
     list-style-type: none;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .Courses li {
     padding: 10px;
-    border-bottom: 1px solid #ddd;
-    border-radius: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    width: 200px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+  
   .Courses li:hover {
-    color: white;
-    background: linear-gradient(45deg, blue, purple);
+    background-color: #1a4385;
+    transform: scale(1.03);
   }
+  
   .Courses li:last-child {
     border-bottom: none;
+  }
+  .course-box{
+    background-color: #315da3;
+    height: 300px;
+  }
+  .course-image-container {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+   
+  }
+  
+  .course-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+  }
+  
+  .course-name {
+    padding: 10px;
+    text-align: center;
+    font-size: 1.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
   }
 
 /* GetStarted.css */
@@ -76,6 +147,12 @@
 
 .hidden {
   display: none;
+}
+@media screen and (max-width: 800px) {
+  .Download {
+    padding: 5%;
+  } 
+    
 }
 
 .login-form {
@@ -101,28 +178,11 @@
 }
 
 .form-group input {
-  width: 100%;
+  max-width: 94.5%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
-}
-
-.style-button {
-  background: linear-gradient(45deg, blue, purple);
-  border: none;
-  border-radius: 20px;
-  color: white;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-position 0.5s ease;
-  background-size: 200% 200%;
-  background-position: 0% 50%;
-}
-
-.style-button:hover {
-  background-position: 100% 50%;
 }
 
 .Loading {
@@ -132,6 +192,7 @@
 
 .Message {
   text-align: center;
+  margin-top: 20px;
 }
 
 /* AboutPage.css */
@@ -156,14 +217,14 @@
   margin-bottom: 20px;
 }
 
-.AboutPage a {
+.QnAPage a {
   text-decoration: none;
   color: blue;
   transition: color 0.3s ease;
 }
 
-.AboutPage a:hover {
-  color: yellow;
+.QnAPage a:hover {
+  color: rgb(46, 0, 99);
 }
 
 /* QnAPage.css */
@@ -203,4 +264,68 @@
 .faq-item p {
   font-size: 1.2em;
   color: #333;
+}
+
+/* Download.css */
+.Download {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.hidden {
+  display: none;
+}
+
+.login-form {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+  
+}
+
+.form-group {
+  margin-bottom: 20px;
+
+  justify-content: center;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.Loading {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.current-file-box {
+  margin-top: 10px;
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  color: black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.Message {
+  text-align: center;
+  margin-top: 20px;
 }

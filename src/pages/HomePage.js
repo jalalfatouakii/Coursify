@@ -13,11 +13,11 @@ function HomePage() {
 
   return (
     <div className="HomePage">
-      <div className="HomePage-content" onClick={handleGetStarted}>
-        <h1 className="HomePage-title">Course Resumer</h1>
+      <div className="HomePage-content" >
+        <h1 className="HomePage-title">Coursify</h1>
         <p className="HomePage-description">
-          Welcome to Course Resumer, an innovative application designed to enhance your educational experience. 
-          With Course Resumer, you can:
+          Welcome to Coursify, an innovative application designed to enhance your educational experience. 
+          With Coursify, you can:
         </p>
         <div className="HomePage-features">
           <div id='downloader' className="HomePage-feature">

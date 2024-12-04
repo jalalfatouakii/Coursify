@@ -33,7 +33,8 @@ function QnAPage() {
       <div className="faq-item">
         <h2>Who created this project?</h2>
         <p>
-          This project was created by Jalal Fatouaki and is inspired by a 0xD34DC0DE's work. It is intended to provide a helpful tool for students.
+          This project was created by Jalal Fatouaki and is inspired by a 0xD34DC0DE's work. It is intended to provide a helpful tool for students.<br></br>
+          <a href="https://gist.github.com/0xD34DC0DE/fd7a269e4e7cb2e508c8a4b9ba1bad95" target="_blank" rel="noopener noreferrer">Original Script</a>.
         </p>
       </div>
       <div className="faq-item">

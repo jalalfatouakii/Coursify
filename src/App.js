@@ -4,7 +4,6 @@ import HomePage from './pages/HomePage';
 import Download from './pages/Download';
 import NavBar from './components/NavBar';
 import './App.css';
-import AboutPage from './pages/AboutPage';
 import QnAPage from './pages/QnAPage';
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/download" element={<Download />} />
-          <Route path="/about" element={<AboutPage />} />
           <Route path="/qna" element={<QnAPage />} />
         </Routes>
       </div>
