@@ -1,30 +1,34 @@
-# Course Resumer
+# Coursify
 
-Course Resumer is an innovative application designed to enhance your educational experience, made by Jalal Fatouaki and Mehdi Tagmouti.
+Coursify is an innovative application designed to enhance your educational experience, made by Jalal Fatouaki
 
-## Features
+## Current Features
+- **Course files download**: Download every file of your selected course with filters of your choice.
+
+## Features in developpement
 
 - **Course Resumes**: Get detailed resumes of your selected courses.
 - **Exam Generation**: Generate exam types based on past years' exams.
-- **User-Friendly Interface**: Easy to navigate and use.
+
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js
+- React
 - npm (Node Package Manager)
 
 ### Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/jalalfatouakii/course-resumer
+git clone https://github.com/jalalfatouakii/coursify
    ```
 
 2. Navigate to the project directory:
 ```bash
-cd course-resumer
+cd coursify
    ```
 
 3. Install the dependencies:
