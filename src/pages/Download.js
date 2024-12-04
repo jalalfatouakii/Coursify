@@ -1,5 +1,5 @@
 // Download.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import '../styles/Pages.css';
@@ -21,75 +21,67 @@ function Download() {
     pdf: true,
     docx: false,
     pptx: false,
-    all:false,
   });
   const [dateFilter, setDateFilter] = useState({
     before: '',
     after: '',
   });
+  const [acceptAllFiles, setAcceptAllFiles] = useState(false);
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const url = new URL("https://studium.umontreal.ca/login/token.php");
-        url.searchParams.append("username", username);
-        url.searchParams.append("password", password);
-        url.searchParams.append("service", "moodle_mobile_app");
+  const fetchCourses = async () => {
+    try {
+      const url = new URL("https://studium.umontreal.ca/login/token.php");
+      url.searchParams.append("username", username);
+      url.searchParams.append("password", password);
+      url.searchParams.append("service", "moodle_mobile_app");
 
-        const response = await fetch(url, {
-          method: 'GET'
-        });
+      const response = await fetch(url, {
+        method: 'GET'
+      });
 
-        if (response.status !== 200) {
-          console.error("Error: Could not log in");
-          return;
-        }
-
-        const data = await response.json();
-        const TOKEN = data.token;
-        setToken(TOKEN);
-        console.log("Logged in successfully! Token:", TOKEN);
-
-        // Fetch courses using the token
-        const coursesUrl = new URL("https://studium.umontreal.ca/webservice/rest/server.php");
-        coursesUrl.searchParams.append("moodlewsrestformat", "json");
-        coursesUrl.searchParams.append("wsfunction", "core_course_get_enrolled_courses_by_timeline_classification");
-        coursesUrl.searchParams.append("wstoken", TOKEN);
-        coursesUrl.searchParams.append("classification", "all"); // Add the classification parameter
-
-        const coursesResponse = await fetch(coursesUrl, {
-          method: 'GET'
-        });
-
-        if (coursesResponse.status !== 200) {
-          console.error("Error: Could not fetch courses");
-          return;
-        }
-
-        const coursesData = await coursesResponse.json();
-        console.log("Courses response:", coursesData);
-        if (coursesData && coursesData.courses) {
-          setCourses(coursesData.courses);
-          console.log("Courses fetched successfully!", coursesData.courses);
-          setIsLoggedIn(true); // Set the logged-in state to true
-        } else {
-          console.error("Error: Unexpected response format", coursesData);
-        }
-      } catch (error) {
-        console.error("Error: Could not log in or fetch courses", error);
+      if (response.status !== 200) {
+        console.error("Error: Could not log in");
+        return;
       }
-    };
 
-    if (username && password) {
-      fetchCourses();
+      const data = await response.json();
+      const TOKEN = data.token;
+      setToken(TOKEN);
+      console.log("Logged in successfully! Token:", TOKEN);
+
+      // Fetch courses using the token
+      const coursesUrl = new URL("https://studium.umontreal.ca/webservice/rest/server.php");
+      coursesUrl.searchParams.append("moodlewsrestformat", "json");
+      coursesUrl.searchParams.append("wsfunction", "core_course_get_enrolled_courses_by_timeline_classification");
+      coursesUrl.searchParams.append("wstoken", TOKEN);
+      coursesUrl.searchParams.append("classification", "all"); // Add the classification parameter
+
+      const coursesResponse = await fetch(coursesUrl, {
+        method: 'GET'
+      });
+
+      if (coursesResponse.status !== 200) {
+        console.error("Error: Could not fetch courses");
+        return;
+      }
+
+      const coursesData = await coursesResponse.json();
+      console.log("Courses response:", coursesData);
+      if (coursesData && coursesData.courses) {
+        setCourses(coursesData.courses);
+        console.log("Courses fetched successfully!", coursesData.courses);
+        setIsLoggedIn(true); // Set the logged-in state to true
+      } else {
+        console.error("Error: Unexpected response format", coursesData);
+      }
+    } catch (error) {
+      console.error("Error: Could not log in or fetch courses", error);
     }
-  }, [username, password]);
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Trigger the useEffect to fetch courses
-    setUsername(username);
-    setPassword(password);
+    fetchCourses();
   };
 
   const handleCourseClick = (course) => {
@@ -123,17 +115,14 @@ function Download() {
       const modules = courseContentsData.flatMap(section => section.modules);
       const filteredFiles = modules.flatMap(module => module.contents || [])
         .filter(content => {
-          let fileTypeMatch;
-          console.log()
-          if (fileTypes.all){
+          let fileTypeMatch; 
+          if (acceptAllFiles){
             fileTypeMatch = content.type === 'file';
-          }
-          else{
-          fileTypeMatch = Object.keys(fileTypes).some(type => fileTypes[type] && content.filename.endsWith(`.${type}`));
+          } else{
+            fileTypeMatch = Object.keys(fileTypes).some(type => fileTypes[type] && content.filename.endsWith(`.${type}`));
           }
           const dateMatch = (!dateFilter.before || new Date(content.timemodified * 1000) <= new Date(dateFilter.before)) &&
                             (!dateFilter.after || new Date(content.timemodified * 1000) >= new Date(dateFilter.after));
-          
           return fileTypeMatch && dateMatch;
         });
 
@@ -184,9 +173,13 @@ function Download() {
     });
   };
 
+  const handleAcceptAllFilesChange = (e) => {
+    setAcceptAllFiles(e.target.checked);
+  };
+
   return (
     <div className="Download">
-      <h1 id="login-title" className={isLoggedIn ? 'hidden' : ''}>Login to your StudiUM</h1>
+      <h1 id="login-title" className={isLoggedIn ? 'hidden' : ''}>Login to Course Resumer</h1>
       <form onSubmit={handleLogin} id="login-form" className={`login-form ${isLoggedIn ? 'hidden' : ''}`}>
         <div className="form-group">
           <label htmlFor="username">Username:</label>
@@ -239,40 +232,43 @@ function Download() {
             <label>
               <input
                 type="checkbox"
-                name="pdf"
-                checked={fileTypes.pdf}
-                onChange={handleFileTypeChange}
+                name="acceptAllFiles"
+                checked={acceptAllFiles}
+                onChange={handleAcceptAllFilesChange}
               />
-              PDF
+              Accept All Files
             </label>
-            <label>
-              <input
-                type="checkbox"
-                name="docx"
-                checked={fileTypes.docx}
-                onChange={handleFileTypeChange}
-              />
-              DOCX
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="pptx"
-                checked={fileTypes.pptx}
-                onChange={handleFileTypeChange}
-              />
-              PPTX
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="all"
-                checked={fileTypes.all}
-                onChange={handleFileTypeChange}
-              />
-              All files
-            </label>
-  
+            {!acceptAllFiles && (
+              <>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="pdf"
+                    checked={fileTypes.pdf}
+                    onChange={handleFileTypeChange}
+                  />
+                  PDF
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="docx"
+                    checked={fileTypes.docx}
+                    onChange={handleFileTypeChange}
+                  />
+                  DOCX
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="pptx"
+                    checked={fileTypes.pptx}
+                    onChange={handleFileTypeChange}
+                  />
+                  PPTX
+                </label>
+              </>
+            )}
           </div>
           <div className="filter-group">
             <label>
