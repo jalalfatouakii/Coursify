@@ -17,17 +17,22 @@ function Download() {
   const [currentNumber, setCurrentNumber] = useState(0);
   const [totalFiles, setTotalFiles] = useState(0);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [customText, setCustomText] = useState('');
   const [fileTypes, setFileTypes] = useState({
     pdf: true,
     docx: false,
     pptx: false,
+    links: false,
+    custom: false,
   });
   const [dateFilter, setDateFilter] = useState({
     before: '',
     after: '',
   });
   const [acceptAllFiles, setAcceptAllFiles] = useState(false);
-
+  const handleCustomTextChange = (event) => {
+    setCustomText(event.target.value);
+  };
   const fetchCourses = async () => {
     try {
       const url = new URL("https://studium.umontreal.ca/login/token.php");
@@ -117,8 +122,15 @@ function Download() {
         .filter(content => {
           let fileTypeMatch; 
           if (acceptAllFiles){
-            fileTypeMatch = content.type === 'file';
-          } else{
+            fileTypeMatch = content.type === 'file' || content.type === 'url';
+          } 
+          else if (fileTypes.custom){
+            fileTypeMatch = content.filename.toLowerCase().includes(customText.toLowerCase());
+          }
+          else if (fileTypes.links){
+            fileTypeMatch = content.type === 'url';
+          }
+          else{
             fileTypeMatch = Object.keys(fileTypes).some(type => fileTypes[type] && content.filename.endsWith(`.${type}`));
           }
           const dateMatch = (!dateFilter.before || new Date(content.timemodified * 1000) <= new Date(dateFilter.before)) &&
@@ -132,20 +144,51 @@ function Download() {
         setMessage('No files found matching the filters');
         return;
       }
-
+      if (fileTypes.links || acceptAllFiles){
+        console.log("Links found matching the filters");
+        console.log(filteredFiles);
+        const links = [];
+        filteredFiles.forEach(link => {
+          const filename = link.filename;
+          const fileurl = link.fileurl;
+          links.push({filename, fileurl});
+        });
+        console.log(links);        
+        const textContent = links.map(link => `${link.filename} : ${link.fileurl}`).join('\n\n');
+        const txtfile = new Blob([textContent], { type: 'text/plain' });
+        if (!acceptAllFiles){ 
+          saveAs(txtfile, `${selectedCourse.fullname}_links.txt`);
+          setIsLoading(false);
+          return;
+        }
+        
+        
+      
+      }
       const zip = new JSZip();
       const folder = zip.folder(`${selectedCourse.fullname}_files`);
       setTotalFiles(filteredFiles.length);
+      const links = [];
       for (let i = 0; i < filteredFiles.length; i++) {
         setCurrentNumber(i);
         const file = filteredFiles[i];
+        if (file.type === 'url'){
+          const filename = file.filename;
+          const fileurl = file.fileurl;
+          links.push({filename, fileurl});
+          continue
+        }
         setCurrentFile(file.filename);
         const fileResponse = await fetch(file.fileurl + `&token=${token}`);
         const fileBlob = await fileResponse.blob();
         folder.file(file.filename, fileBlob);
         setProgress(((i + 1) / filteredFiles.length) * 100);
       }
-
+      if (acceptAllFiles){
+        const textContent = links.map(link => `${link.filename} : ${link.fileurl}`).join('\n\n');
+        const txtfile = new Blob([textContent], { type: 'text/plain' });
+        folder.file(`${selectedCourse.fullname}_links.txt`, txtfile);
+      }
       const zipBlob = await zip.generateAsync({ type: 'blob' });
       saveAs(zipBlob, `${selectedCourse.fullname}_files.zip`);
       console.log("Files downloaded and zipped successfully!");
@@ -267,6 +310,32 @@ function Download() {
                   />
                   PPTX
                 </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="links"
+                    checked={fileTypes.links}
+                    onChange={handleFileTypeChange}
+                  />
+                  Links
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="custom"
+                    checked={fileTypes.custom}
+                    onChange={handleFileTypeChange}
+                  />
+                  Custom
+                </label>
+                {fileTypes.custom && (
+                  <input
+                    type="text"
+                    value={customText}
+                    onChange={handleCustomTextChange}
+                    placeholder="Enter custom text"
+                  />
+                )}
               </>
             )}
           </div>
