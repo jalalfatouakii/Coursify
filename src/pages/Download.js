@@ -3,8 +3,51 @@ import React, { useState } from 'react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import '../styles/Pages.css';
+import axios from 'axios';
+
 
 function Download() {
+  // Function to check if a link is a Google Docs link
+  const isGoogleDocsLink = (url) => {
+    const googleDocsPattern = /https:\/\/docs\.google\.com\/(document|presentation)\/d\/.+/;
+    return googleDocsPattern.test(url);
+  };
+  /*
+  const isGoogleDriveLink = (url) => {
+    const googleDrivePattern = /https:\/\/drive\.google\.com\/file\/d\/.+/;
+    return googleDrivePattern.test(url);
+  };
+  const extractFileIdFromUrl = (url) => {
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return match ? match[1] : null;
+  };
+  const downloadGoogleDriveFile = async (fileId) => {
+    const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    const response = await axios.get(downloadUrl, { responseType: 'blob' });
+    return response.data;
+  };*/
+  // Function to download the PDF version of the Google Docs link
+  const downloadGoogleDocsPdf = async (url) => {
+    console.log('Downloading Google Docs PDF:', url);
+    const pdfUrl = url.replace(/\/edit.*$/, '/export?format=pdf');
+    const response = await axios.get(pdfUrl, { responseType: 'blob' });
+    console.log('Downloaded Google Docs PDF:', response.data);
+    return response.data;
+  };
+
+  // Function to add the downloaded PDF to a ZIP file
+  const addPdfToZip = async (zip, url, fileName, folder) => {
+    if (isGoogleDocsLink(url)) {
+      const pdfBlob = await downloadGoogleDocsPdf(url);
+      folder.file(`${fileName}.pdf`, pdfBlob);
+    }
+    /*
+    else if (isGoogleDriveLink(url)){
+      const pdfBlob = await downloadGoogleDriveFile(extractFileIdFromUrl(url));
+      folder.file(`${fileName}.pdf`, pdfBlob);
+    }*/
+
+  };
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
@@ -153,11 +196,30 @@ function Download() {
           const fileurl = link.fileurl;
           links.push({filename, fileurl});
         });
-        console.log(links);        
+        console.log(links); 
+        const zip2 = new JSZip();
+        const folder2 = zip2.folder(`${selectedCourse.fullname}_files`);
+        setTotalFiles(filteredFiles.length + 1);
+        for (let i = 0; i < links.length; i++) {
+          const link = links[i].fileurl;
+          await addPdfToZip(zip2, link, `file${i + 1}`,folder2);
+          setCurrentNumber(i);
+          setCurrentFile(links[i].filename);
+          setProgress(((i + 1) / filteredFiles.length) * 100);
+          //folder2.file(links[i].filename, fblob);
+        }
+        console.log(folder2)
+             
+        console.log("Files downloaded and zipped successfully!"); 
         const textContent = links.map(link => `${link.filename} : ${link.fileurl}`).join('\n\n');
+        setCurrentNumber(filteredFiles.length);
+        setCurrentFile(`${selectedCourse.fullname}_links.txt`);
+        setProgress(100);
         const txtfile = new Blob([textContent], { type: 'text/plain' });
+        folder2.file(`${selectedCourse.fullname}_links.txt`, txtfile);
+        const zipBlob2 = await zip2.generateAsync({ type: 'blob' });
         if (!acceptAllFiles){ 
-          saveAs(txtfile, `${selectedCourse.fullname}_links.txt`);
+          saveAs(zipBlob2, `${selectedCourse.fullname}_links.zip`); 
           setIsLoading(false);
           return;
         }
@@ -185,6 +247,13 @@ function Download() {
         setProgress(((i + 1) / filteredFiles.length) * 100);
       }
       if (acceptAllFiles){
+        for (let i = 0; i < links.length; i++) {
+          const link = links[i].fileurl;
+          await addPdfToZip(zip, link, `file${i + 1}`,folder);
+          setCurrentNumber(i);
+          setCurrentFile(links[i].filename);
+          setProgress(((i + 1) / filteredFiles.length) * 100);
+        }
         const textContent = links.map(link => `${link.filename} : ${link.fileurl}`).join('\n\n');
         const txtfile = new Blob([textContent], { type: 'text/plain' });
         folder.file(`${selectedCourse.fullname}_links.txt`, txtfile);
