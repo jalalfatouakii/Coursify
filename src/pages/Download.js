@@ -1,5 +1,5 @@
 // Download.js
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import '../styles/Pages.css';
@@ -62,6 +62,7 @@ function Download() {
   const [totalFiles, setTotalFiles] = useState(0);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [customText, setCustomText] = useState('');
+  const [filteredCourses, setFilteredCourses] = useState({});
   const [fileTypes, setFileTypes] = useState({
     pdf: true,
     docx: false,
@@ -74,6 +75,35 @@ function Download() {
     after: '',
   });
   const [acceptAllFiles, setAcceptAllFiles] = useState(false);
+  const [selectedTrimester, setSelectedTrimester] = useState('all');
+
+  const handleTrimesterClick = (trimester) => {
+    setSelectedTrimester(trimester);
+  };
+
+  const getTrimesterButtons = () => {
+    const trimesters = Object.keys(filteredCourses);
+    return (
+      <div className="trimester-buttons">
+        <button onClick={() => handleTrimesterClick('all')}>All</button>
+        {trimesters.map((trimester) => (
+          <button key={trimester} onClick={() => handleTrimesterClick(trimester)}>
+            {trimester}
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  const getFilteredCourses = () => {
+    if (selectedTrimester === 'all') {
+      //console.log(courses);
+      return courses;
+    }
+    //console.log(filteredCourses[selectedTrimester]);
+    return filteredCourses[selectedTrimester] || [];
+  };
+
   const handleCustomTextChange = (event) => {
     setCustomText(event.target.value);
   };
@@ -94,7 +124,7 @@ function Download() {
       }
 
       const data = await response.json();
-      console.log(data)
+      //console.log(data)
       const TOKEN = data.token;
       setToken(TOKEN);
       const userInfoUrl = new URL("https://studium.umontreal.ca/webservice/rest/server.php");
@@ -139,6 +169,7 @@ function Download() {
       if (coursesData && coursesData.courses) {
         setCourses(coursesData.courses);
         console.log("Courses fetched successfully!", coursesData.courses);
+        console.log(filterCourses(coursesData.courses));
         setIsLoggedIn(true); // Set the logged-in state to true
       } else {
         console.error("Error: Unexpected response format", coursesData);
@@ -147,7 +178,36 @@ function Download() {
       console.error("Error: Could not log in or fetch courses", error);
     }
   };
+  const checkTrimester = (course) =>{
+    const courseName = course.shortname;
+    return courseName.slice(-3);
+  }
+  const matchesTrimester = (value) =>{
+    const regex = /^[A-Za-z]\d{2}$/;
+    return regex.test(value);
+  }
+  const filterCourses = (courses) =>{
+    const filtrado = {"Other":[]};
+    courses.forEach(course => {
+      //console.log(course)
+      const trimester = checkTrimester(course);
+      if (!matchesTrimester(trimester)){
+        
+        filtrado['Other'].push(course)
+      }
+      else if (filtrado[trimester]) {
+        filtrado[trimester].push(course);
+      } else {
+        filtrado[trimester] = [course];
+      }
+    });
+    const otherCourses = filtrado['Other'];
+    delete filtrado['Other'];
+    filtrado['Other'] = otherCourses;
+    setFilteredCourses(filtrado);
+    return filtrado;
 
+  }
   const handleLogin = (e) => {
     e.preventDefault();
     fetchCourses();
@@ -208,7 +268,7 @@ function Download() {
         setMessage('No files found matching the filters');
         return;
       }
-      if (fileTypes.links || acceptAllFiles){
+      if (fileTypes.links){
         console.log("Links found matching the filters");
         console.log(filteredFiles);
         const links = [];
@@ -345,8 +405,9 @@ function Download() {
         <div className="Courses">
           <h2>Welcome {fullname}</h2>
           <h2>Your Courses</h2>
+          {getTrimesterButtons()}
           <ul>
-            {courses.map(course => (
+            {getFilteredCourses().map(course => (
               <li key={course.id} onClick={() => handleCourseClick(course)} className="course-box">
                 <div className="course-image-container">
                   <img src={course.courseimage} alt={course.fullname} className="course-image" />
