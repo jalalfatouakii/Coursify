@@ -50,6 +50,7 @@ function Download() {
   };
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [fullname, setFullname] = useState('');
   const [token, setToken] = useState('');
   const [courses, setCourses] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -93,8 +94,28 @@ function Download() {
       }
 
       const data = await response.json();
+      console.log(data)
       const TOKEN = data.token;
       setToken(TOKEN);
+      const userInfoUrl = new URL("https://studium.umontreal.ca/webservice/rest/server.php");
+      userInfoUrl.searchParams.append("moodlewsrestformat", "json");
+      userInfoUrl.searchParams.append("wsfunction", "core_webservice_get_site_info");
+      userInfoUrl.searchParams.append("wstoken", TOKEN);
+
+      const userInfoResponse = await fetch(userInfoUrl, {
+        method: 'GET'
+      });
+
+      if (userInfoResponse.status !== 200) {
+        console.error("Error: Could not fetch user info");
+        return;
+      }
+
+      const userInfoData = await userInfoResponse.json();
+      console.log("User info response:", userInfoData);
+      const userName = userInfoData.fullname;
+      console.log("User's name:", userName);
+      setFullname(userName);
       console.log("Logged in successfully! Token:", TOKEN);
 
       // Fetch courses using the token
@@ -322,6 +343,7 @@ function Download() {
       )}
       {courses.length > 0 && !isLoading && !selectedCourse && (
         <div className="Courses">
+          <h2>Welcome {fullname}</h2>
           <h2>Your Courses</h2>
           <ul>
             {courses.map(course => (
