@@ -8,6 +8,7 @@ Coursify is an innovative application designed to enhance your educational exper
 - **File Download**: Allows users to download all files from a selected course.
 - **File Filters**: Provides options to filter files by type (PDF, DOCX, PPTX) and date (before/after a specific date).
 - **Progress Tracking**: Shows a progress bar and the name of the current file being downloaded.
+- **Homework Tracker**: Allows the student to view the upcoming homeworks for all the active courses they're following.
 
 ## Features in developpement
 
