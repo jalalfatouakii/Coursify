@@ -149,9 +149,10 @@
   display: none;
 }
 @media screen and (max-width: 800px) {
-  .Download {
+  .Download, .planificateur {
     padding: 5%;
   } 
+  
     
 }
 
@@ -267,7 +268,7 @@
 }
 
 /* Download.css */
-.Download {
+.Download, .planificateur {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -351,4 +352,47 @@
 .trimester-buttons button:hover {
   background-position: 100% 50%;
   transform: scale(1.05);
+}
+
+.homework-list {
+  list-style-type: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.homework-list ul {
+  list-style-type: none;
+}
+
+.homework-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  color: black;
+}
+.homework-item:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.05);
+} 
+
+.homework-course {
+  font-weight: bold;
+  margin-bottom: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.homework-name {
+  margin-bottom: 5px;
+  color: black;
+}
+
+.homework-due {
+  color: #888;
+}
+.course-section ul {
+  margin-left: -5vh;
 }

@@ -5,6 +5,7 @@ import Download from './pages/Download';
 import NavBar from './components/NavBar';
 import './App.css';
 import QnAPage from './pages/QnAPage';
+import Planificateur from './pages/Planificateur';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/download" element={<Download />} />
           <Route path="/qna" element={<QnAPage />} />
+          <Route path="/planificateur" element={<Planificateur />} />
         </Routes>
       </div>
     </Router>
