@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { saveAs } from 'file-saver';
+import '../styles/Pages.css'; // Import the CSS file for styling
 
 const Planificateur = () => {
   const [homeworks, setHomeworks] = useState([]);
@@ -64,6 +66,18 @@ const Planificateur = () => {
     }
   };
 
+  const createICSFile = () => {
+    let icsContent = 'BEGIN:VCALENDAR\nVERSION:2.0\nCALSCALE:GREGORIAN\n';
+    homeworks.forEach(homework => {
+      const startDate = new Date(homework.duedate * 1000);
+      const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour duration
+      icsContent += `BEGIN:VEVENT\nSUMMARY:${homework.name}\nDESCRIPTION:${homework.courseName}\nDTSTART:${startDate.toISOString().replace(/-|:|\.\d+/g, '')}\nDTEND:${endDate.toISOString().replace(/-|:|\.\d+/g, '')}\nEND:VEVENT\n`;
+    });
+    icsContent += 'END:VCALENDAR';
+    const blob = new Blob([icsContent], { type: 'text/calendar' });
+    saveAs(blob, 'homeworks.ics');
+  };
+
 return (
     <div className="planificateur">
         <h1 className={isLoggedIn ? 'hidden' : ''}>Login to view your planned homeworks</h1>
@@ -122,6 +136,9 @@ return (
                 </div>
             ))}
         </div>
+        {homeworks.length > 0 && (
+        <button className="style-button" onClick={createICSFile}>Save to Calendar</button>
+      )}
     </div>
 );
 };
